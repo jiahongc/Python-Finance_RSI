@@ -7,7 +7,7 @@ import numpy as np
 import yfinance as yf
 
 st.set_page_config(layout="wide")
-st.markdown("<h1 style='text-align: center; color: black;'><em>RSI</em></h1>   \n", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: black;'><em>Stock Research</em></h1>   \n", unsafe_allow_html=True)
 st.markdown("   \n")
 st.markdown("   \n")
 st.markdown("   \n")
@@ -15,10 +15,10 @@ st.markdown("   \n")
 col1,col_placeholder,col2 = st.columns([3,1,3])
 with col1:
     ticker = st.text_input('Enter Ticker: ')
-with col2:   
     time = st.selectbox("Select Time", ("1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"))
-
-
+    metrics= st.selectbox("Select Financial Table",("Financials","Quarterly Financials",
+ "Balance Sheet","Quarterly Balance Sheet"
+    ,"Cashflow","Quarterly Cashflow","Earnings","Quarterly Earnings"))
 
 if ticker and time:
     df = yf.Ticker(ticker).history(period=time)
@@ -67,7 +67,33 @@ if ticker and time:
 
     RSI_Chart=RSI+Oversold+Overbought
 
+    with col2:
+        st.altair_chart(Stock)
+        st.altair_chart(RSI_Chart)
 
-    st.altair_chart(Stock)
+if ticker and metrics:
+    company = yf.Ticker(ticker)
+    if metrics=="Financials":
+        df_company = company.financials
+    elif metrics=="Quarterly Financials":
+        df_company = company.quarterly_financials
+    elif metrics=="Balance Sheet":
+        df_company = company.balance_sheet
+    elif metrics=="Quarterly Balance Sheet":
+        df_company = company.quarterly_balance_sheet
+    elif metrics=="Cashflow":
+        df_company = company.cashflow
+    elif metrics=="Quarterly Cashflow":
+        df_company = company.quarterly_cashflow
+    elif metrics=="Earnings":
+        df_company = company.earnings
+    elif metrics=="Quarterly Earnings":
+        df_company = company.quarterly_earnings
+    elif metrics=="":
+        df_company = company
+    elif metrics=="":
+        df_company = company
 
-    st.altair_chart(RSI_Chart)
+with col2:
+    st.write(metrics + " for " + ticker)
+    st.dataframe(df_company)
