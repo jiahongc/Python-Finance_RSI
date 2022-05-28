@@ -93,7 +93,7 @@ if ticker and metrics:
         df_company = company
     elif metrics=="":
         df_company = company
-
-with col2:
-    st.write(metrics + " for " + ticker)
-    st.dataframe(df_company)
+    
+    with col2:
+        st.write(metrics + " for " + ticker)
+        st.dataframe(df_company)
