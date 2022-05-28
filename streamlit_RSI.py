@@ -8,6 +8,8 @@ from itertools import chain,cycle
 import yfinance as yf
 
 col1,col2 = st.columns(2)
+ticker="SPY"
+time="ytd"
 
 with col1:
     ticker = st.text_input('Enter Ticker: ')
